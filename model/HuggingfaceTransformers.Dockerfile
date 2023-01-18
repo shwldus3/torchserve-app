@@ -33,10 +33,15 @@ RUN python3 Download_Transformer_models.py
 RUN echo $version
 RUN torch-model-archiver --model-name BERTSeqClassification --version $version --serialized-file Transformer_model/pytorch_model.bin --handler ./Transformer_handler_generalized.py --extra-files "Transformer_model/config.json,./setup_config.json,./Seq_classification_artifacts/index_to_name.json"
 
-# 환경에 맞게 아래의 bucket_name, gcloud service account, torchserve LB 정보는 변경해야 합니다.
-ENV bucket_name=test-model-storage
-ENV service_account_path=supertone-374908-199d4c154d6c.json
-ENV torchserve_url=34.146.41.134:8081
+# 구성 환경에 맞게 아래 정보가 필요합니다.
+# GCS 버킷명
+ENV bucket_name=
+# gcloud service account
+ENV service_account_path=
+# Auth0 토큰
+ENV token=
+# {torchserve service/torchserve IP}:8081
+ENV torchserve_url=
 
 # 학습 모델 mar 파일 Cloud Storage에 업로드
 ENV filename=BERTSeqClassification_$now.mar
@@ -49,5 +54,7 @@ RUN gcloud storage cp ${filename} gs://${bucket_name}/
 
 # torchserve 모델 등록
 ENV torchserve_url=${torchserve_url}/models?model_name=BERTSeqClassification&url=https://storage.cloud.google.com/${bucket_name}/${filename}&batch_size=4&max_batch_delay=5000&initial_workers=3&synchronous=true
+ENV header=authorization: Bearer ${token}
 RUN echo $torchserve_url
-RUN curl -X POST $torchserve_url
+RUN echo $header
+RUN curl -X POST $torchserve_url --header "${header}"
