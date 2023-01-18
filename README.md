@@ -1,6 +1,6 @@
 # Prerequisite
 - [Docker](https://docs.docker.com/get-docker/)
-- [Google GKE Cluster](https://github.com/pytorch/serve/blob/master/kubernetes/README.md#-Torchserve-on-Kubernetes)
+- [Google GKE Cluster](https://github.com/pytorch/serve/blob/master/kubernetes/README.md#-Torchserve-on-Kubernetes), [Cloud Storage](https://cloud.google.com/storage)
 - [Istio](https://istio.io/latest/docs/setup/getting-started/)
 - [Auth0](https://auth0.com/)
 - [cdk8s](https://cdk8s.io/docs/latest/getting-started/)
