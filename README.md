@@ -51,3 +51,5 @@
     	-T samples/sample_text_captum_input.txt \
     	--header 'authorization: Bearer {token}'
   ``` 
+
+#### 4. Test scenario & result [[link](https://www.notion.so/chloenoh/torchserve-app-cee738e75961435088fb0947d91aec80)]
