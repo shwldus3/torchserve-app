@@ -6,6 +6,9 @@
 - [Auth0 m2m application](https://auth0.com/)
 - [cdk8s, pipenv](https://cdk8s.io/docs/latest/getting-started/)
 
+# Architecture
+![here](./image/architecture.png)
+
 # How to use
 ## Deploy pytorch/serve 
 #### 1. Move to model directory
