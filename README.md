@@ -7,7 +7,7 @@
 - [cdk8s, pipenv](https://cdk8s.io/docs/latest/getting-started/)
 
 # Architecture
-![here](./image/architecture.png)
+![here](./image/diagram.png)
 
 # How to use
 ## Deploy pytorch/serve 
