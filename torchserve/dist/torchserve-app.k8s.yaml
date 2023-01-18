@@ -91,8 +91,8 @@ apiVersion: security.istio.io/v1
 kind: RequestAuthentication
 spec:
   jwtRules:
-    - issuer: https://dev-s814zl7br3fphiwt.jp.auth0.com/
-      jwksUri: https://dev-s814zl7br3fphiwt.jp.auth0.com/.well-known/jwks.json
+    - issuer: https://{auth0-domain-url}
+      jwksUri: https://{auth0-domain-url}/.well-known/jwks.json
   selector:
     matchLabels:
       app: torchserve
