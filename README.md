@@ -1,14 +1,22 @@
 #### Import istio crd
-	cdk8s import crds/istio_crds.yaml
+  ```bash
+	  cdk8s import crds/istio_crds.yaml
+  ```
 
 #### Generate k8s manifests in "dist/"
-	cdk8s synth
+  ```bash
+    cdk8s synth
+  ```
 
 #### Deploy
-  kubectl apply -f dist/
+  ```bash
+    kubectl apply -f dist/
+  ```
 
 #### Register sample model
   ```bash
+    cd model
+
     docker build -f HuggingfaceTransformers.Dockerfile \
     --build-arg now="$(date +%G%m%d_%H%M%S)" \
     --build-arg version=1.0 \
