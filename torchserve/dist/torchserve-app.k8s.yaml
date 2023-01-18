@@ -1,0 +1,164 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  labels:
+    istio-injection: enabled
+  name: modelserve
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: model-store-claim
+  namespace: modelserve
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 10Gi
+  storageClassName: standard-rwo
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    app: torchserve
+  name: torchserve
+  namespace: modelserve
+spec:
+  ports:
+    - name: preds
+      port: 8080
+      targetPort: ts
+    - name: mdl
+      port: 8081
+      targetPort: ts-management
+    - name: metrics
+      port: 8082
+      targetPort: ts-metrics
+  selector:
+    app: torchserve
+  type: LoadBalancer
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: torchserve
+  name: torchserve
+  namespace: modelserve
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: torchserve
+  template:
+    metadata:
+      labels:
+        app: torchserve
+    spec:
+      containers:
+        - args:
+            - torchserve --start --model-store /home/model-server/shared/model-store/
+          image: pytorch/torchserve:latest
+          imagePullPolicy: IfNotPresent
+          name: torchserve
+          ports:
+            - containerPort: 8080
+              name: ts
+            - containerPort: 8081
+              name: ts-management
+            - containerPort: 8082
+              name: ts-metrics
+          resources:
+            limits:
+              cpu: 1
+              memory: 4Gi
+          volumeMounts:
+            - mountPath: /home/model-server/shared/
+              name: persistent-storage
+      securityContext:
+        fsGroup: 2000
+        fsGroupChangePolicy: OnRootMismatch
+        runAsGroup: 3000
+        runAsUser: 1000
+      volumes:
+        - name: persistent-storage
+          persistentVolumeClaim:
+            claimName: model-store-claim
+---
+apiVersion: security.istio.io/v1
+kind: RequestAuthentication
+spec:
+  jwtRules:
+    - issuer: https://dev-s814zl7br3fphiwt.jp.auth0.com/
+      jwksUri: https://dev-s814zl7br3fphiwt.jp.auth0.com/.well-known/jwks.json
+  selector:
+    matchLabels:
+      app: torchserve
+metadata:
+  name: auth0
+  namespace: modelserve
+---
+apiVersion: security.istio.io/v1
+kind: AuthorizationPolicy
+spec:
+  action: ALLOW
+  rules:
+    - to:
+        - operation:
+            methods:
+              - GET
+              - POST
+            paths:
+              - /pytorch/*
+      when:
+        - key: request.auth.claims[permissions]
+          values:
+            - inference:pytorch
+  selector:
+    matchLabels:
+      app: torchserve
+metadata:
+  name: pytorch-policy
+  namespace: modelserve
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: Gateway
+spec:
+  selector:
+    istio: ingressgateway
+  servers:
+    - hosts:
+        - "*"
+      port:
+        name: http
+        number: 80
+        protocol: HTTP
+metadata:
+  labels:
+    app: modelserve-gateway
+  name: modelserve-gateway
+  namespace: modelserve
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: VirtualService
+spec:
+  gateways:
+    - modelserve-gateway
+  hosts:
+    - "*"
+  http:
+    - match:
+        - uri:
+            prefix: /pytorch/
+      rewrite:
+        uri: /
+      route:
+        - destination:
+            host: torchserve
+            port:
+              number: 8080
+metadata:
+  name: modelserve-inference-vs
+  namespace: modelserve
