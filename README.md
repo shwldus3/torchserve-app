@@ -2,7 +2,7 @@
 - [Docker](https://docs.docker.com/get-docker/)
 - [Google GKE Cluster](https://github.com/pytorch/serve/blob/master/kubernetes/README.md#-Torchserve-on-Kubernetes), [Cloud Storage](https://cloud.google.com/storage)
 - [Istio](https://istio.io/latest/docs/setup/getting-started/)
-- [Auth0](https://auth0.com/)
+- [Auth0 m2m application](https://auth0.com/)
 - [cdk8s](https://cdk8s.io/docs/latest/getting-started/)
 
 # How to use
@@ -14,7 +14,7 @@
 
 #### 2. Import istio crd
   ```bash
-	  cdk8s import crds/istio_crds.yaml
+    cdk8s import crds/istio_crds.yaml
   ```
 
 #### 3. Generate k8s manifests in "dist/"
