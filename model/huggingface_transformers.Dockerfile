@@ -1,23 +1,7 @@
-FROM ubuntu:18.04
+FROM lindseynoh3/torcharchiver:latest
 
 ARG now
 ARG version
-
-# Python, pip, git, curl, gcloud 설치
-RUN apt-get update && apt-get install -y \
-    python3.8 \
-    python3-pip
-RUN apt-get install -y git
-RUN apt-get -y install curl
-RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] http://packages.cloud.google.com/apt cloud-sdk main" | tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | apt-key --keyring /usr/share/keyrings/cloud.google.gpg  add - && apt-get update -y && apt-get install google-cloud-cli -y
-
-# pip package 설치
-RUN pip3 install transformers==4.6.0
-RUN pip3 install torch torch-model-archiver
-
-# torchserve 소스코드 다운로드
-RUN git clone https://github.com/pytorch/serve.git
-RUN cd serve/model-archiver && pip3 install .
 
 # 작업위치 변경
 WORKDIR serve/examples/Huggingface_Transformers
@@ -38,7 +22,7 @@ RUN torch-model-archiver --model-name BERTSeqClassification --version $version -
 ENV bucket_name=
 # gcloud service account
 ENV service_account_path=
-# Auth0 토큰
+# Auth0 토큰 : authorization: Bearer 을 앞에 붙여 입력하세요
 ENV token=
 # {torchserve service/torchserve IP}:8081
 ENV torchserve_url=
@@ -47,14 +31,13 @@ ENV torchserve_url=
 ENV filename=BERTSeqClassification_$now.mar
 RUN echo $filename
 RUN mv BERTSeqClassification.mar $filename
-COPY $service_account_path /serve 
-RUN gcloud auth activate-service-account --key-file /serve/supertone-374908-199d4c154d6c.json
+COPY $service_account_file /serve 
+RUN gcloud auth activate-service-account --key-file /serve/$service_account_file
 RUN gcloud config set project supertone
 RUN gcloud storage cp ${filename} gs://${bucket_name}/
 
 # torchserve 모델 등록
 ENV torchserve_url=${torchserve_url}/models?model_name=BERTSeqClassification&url=https://storage.cloud.google.com/${bucket_name}/${filename}&batch_size=4&max_batch_delay=5000&initial_workers=3&synchronous=true
-ENV header=authorization: Bearer ${token}
 RUN echo $torchserve_url
-RUN echo $header
-RUN curl -X POST $torchserve_url --header "${header}"
+RUN echo $token
+RUN curl -X POST $torchserve_url -H $token

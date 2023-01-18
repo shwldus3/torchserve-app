@@ -11,7 +11,7 @@
 
 # How to use
 ## Deploy pytorch/serve 
-#### 1. Move to model directory
+#### 1. Move to torchserve directory
   ```bash
     cd torchserve
   ```
@@ -39,7 +39,7 @@
 
 #### 2. Register sample model
   ```bash
-    docker build -f HuggingfaceTransformers.Dockerfile \
+    docker build -f huggingfacetransformers.Dockerfile \
     	--build-arg now="$(date +%G%m%d_%H%M%S)" \
     	--build-arg version=1.0 \
     	.
