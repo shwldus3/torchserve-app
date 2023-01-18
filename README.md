@@ -22,7 +22,7 @@
   - Generate k8s manifests in "dist/"
   ```bash
     pipenv install 
-	  cdk8s import crds/istio_crds.yaml
+    cdk8s import crds/istio_crds.yaml
     cdk8s synth
   ```
 
@@ -40,14 +40,14 @@
 #### 2. Register sample model
   ```bash
     docker build -f HuggingfaceTransformers.Dockerfile \
-    --build-arg now="$(date +%G%m%d_%H%M%S)" \
-    --build-arg version=1.0 \
-    .
+    	--build-arg now="$(date +%G%m%d_%H%M%S)" \
+    	--build-arg version=1.0 \
+    	.
   ```
 
 #### 3. Test
   ```
     curl -X POST http://{ingressgateway IP}/pytorch/predictions/BERTSeqClassification \
-    -T samples/sample_text_captum_input.txt \
-    --header 'authorization: Bearer {token}'
+    	-T samples/sample_text_captum_input.txt \
+    	--header 'authorization: Bearer {token}'
   ``` 
