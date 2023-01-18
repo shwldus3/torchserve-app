@@ -13,7 +13,7 @@
     cd torchserve
   ```
 
-#### 2. 
+#### 2. Generate k8s manifest with cdk8s
   - Install pip requirements
   - Import istio crd
   - Generate k8s manifests in "dist/"
