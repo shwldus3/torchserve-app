@@ -40,6 +40,7 @@
 #### 2. Register sample model
   ```bash
     docker build -f huggingface_transformers.Dockerfile \
+      -t torchmodelarchiver \
     	--build-arg now="$(date +%G%m%d_%H%M%S)" \
     	--build-arg version=1.0 \
     	.
