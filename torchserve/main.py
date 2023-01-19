@@ -14,7 +14,7 @@ class TorchserveChart(Chart):
         app_name="torchserve"
         
         TorchserveService(self, app_name, namespace=namespace) 
-        IstioService(self, "istio", app_name=app_name, namespace=namespace) 
+        IstioService(self, app_name=app_name, namespace=namespace) 
 
 
 app = App()        

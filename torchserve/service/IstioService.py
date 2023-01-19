@@ -10,8 +10,8 @@ from construct.VirtualServiceConstruct import VirtualServiceConstruct
 
 class IstioService(Construct):
 
-    def __init__(self, scope: Construct, id: str, *, namespace: str, app_name: str):
-        super().__init__(scope, id)
+    def __init__(self, scope: Construct, *, namespace: str, app_name: str):
+        super().__init__(scope, "istio")
 
         self.namespace = namespace
         self.app_name = app_name
@@ -28,6 +28,6 @@ class IstioService(Construct):
         AuthorizationPolicyConstruct(self, namespace=self.namespace, app_name=self.app_name, action="ALLOW", rules_values=["inference:pytorch"])
 
     def createGateway(self):
-        gateway_name = "modelserve-gateway"
+        gateway_name = self.namespace + "-gateway"
         GatewayConstruct(self, namespace=self.namespace, gateway_name=gateway_name, port=80)
         VirtualServiceConstruct(self, namespace=self.namespace, gateway_name=gateway_name, app_name=self.app_name)

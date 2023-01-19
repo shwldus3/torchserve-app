@@ -8,11 +8,12 @@ class RequestAuthenticationConstruct(Construct):
     def __init__(self, scope: Construct, *,
                 namespace: str,
                 app_name: str):
-        super().__init__(scope, "RequestAuthentication")
+        id = "request-authentication"
+        super().__init__(scope, id)
 
         label={"app": app_name}
         security.RequestAuthentication(
-            self, "RequestAuthentication",
+            self, id,
             metadata={"name": "auth0", "namespace": namespace},
             spec=security.RequestAuthenticationSpec(selector=security.RequestAuthenticationSpecSelector(match_labels=label),
             jwt_rules=[

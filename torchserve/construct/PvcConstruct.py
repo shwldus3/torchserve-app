@@ -11,11 +11,13 @@ class PvcConstruct(Construct):
                 storage_class_name: str, 
                 access_modes=["ReadWriteOnce"],
                 storage="10Gi"):
-        super().__init__(scope, "pvc")
+        id = "persistent-volume-claim"
+        super().__init__(scope, id)
 
         metadata = k8s.ObjectMeta(name=name, namespace=namespace)
 
-        k8s.KubePersistentVolumeClaim(self, "PersistentVolumeClaim",
+        k8s.KubePersistentVolumeClaim(
+          self, id,
           metadata=metadata,
           spec=k8s.PersistentVolumeClaimSpec(
             access_modes=access_modes,

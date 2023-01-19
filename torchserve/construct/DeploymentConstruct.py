@@ -15,7 +15,8 @@ class DeploymentConstruct(Construct):
                 replicas=1, 
                 cpu=1, 
                 memory="4Gi"):
-        super().__init__(scope, "deployment")
+        id = "deployment"
+        super().__init__(scope, id)
         
         containers = [
             k8s.Container(
@@ -54,7 +55,7 @@ class DeploymentConstruct(Construct):
         )
 
         k8s.KubeDeployment(
-            self, "deployment",
+            self, id,
             metadata=metadata,
             spec=k8s.DeploymentSpec(
                 replicas=replicas,

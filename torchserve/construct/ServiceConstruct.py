@@ -6,7 +6,8 @@ from imports import k8s
 class ServiceConstruct(Construct):
 
     def __init__(self, scope: Construct, *, metadata: k8s.ObjectMeta, label: dict):
-        super().__init__(scope, "service")
+        id = "service"
+        super().__init__(scope, id)
         
         ports = [
             k8s.ServicePort(name="preds", port=8080, target_port=k8s.IntOrString.from_string("ts")),
@@ -15,7 +16,7 @@ class ServiceConstruct(Construct):
         ]
 
         k8s.KubeService(
-            self, "service",
+            self, id,
             metadata=metadata,
             spec=k8s.ServiceSpec(
                 type="LoadBalancer",

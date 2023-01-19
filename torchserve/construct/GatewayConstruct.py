@@ -10,7 +10,7 @@ class GatewayConstruct(Construct):
                 namespace: str,
                 gateway_name: str,
                 port: int):
-        id = "Gateway"
+        id = "gateway"
         super().__init__(scope, id)
 
         labels = {"app": gateway_name}
@@ -21,7 +21,8 @@ class GatewayConstruct(Construct):
             )
         ]
 
-        nw.Gateway(self, id,
+        nw.Gateway(
+            self, id,
             metadata={"name": gateway_name, "namespace": namespace, "labels": labels},
             spec=nw.GatewaySpec(
                 selector={"istio": "ingressgateway"},

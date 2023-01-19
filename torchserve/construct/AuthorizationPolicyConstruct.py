@@ -12,7 +12,7 @@ class AuthorizationPolicyConstruct(Construct):
                 action: str,
                 rules_key = "request.auth.claims[permissions]",
                 rules_values: list):
-        id = "AuthorizationPolicy"
+        id = "authorization-policy"
         super().__init__(scope, id)
 
         sc.AuthorizationPolicy(
