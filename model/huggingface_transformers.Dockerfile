@@ -21,7 +21,7 @@ RUN torch-model-archiver --model-name BERTSeqClassification --version $version -
 # GCS 버킷명
 ENV bucket_name=
 # gcloud service account
-ENV service_account_path=
+ENV service_account_file=
 # Auth0 토큰 : authorization: Bearer 을 앞에 붙여 입력하세요
 ENV token=
 # {torchserve service/torchserve IP}:8081
@@ -32,7 +32,7 @@ ENV filename=BERTSeqClassification_$now.mar
 RUN echo $filename
 RUN mv BERTSeqClassification.mar $filename
 COPY $service_account_file /serve 
-RUN gcloud auth activate-service-account --key-file /serve/$service_account_file
+RUN gcloud auth activate-service-account --key-file /serve/${service_account_file}
 RUN gcloud config set project supertone
 RUN gcloud storage cp ${filename} gs://${bucket_name}/
 
