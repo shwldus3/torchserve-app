@@ -8,14 +8,15 @@ class GatewayConstruct(Construct):
 
     def __init__(self, scope: Construct, *,
                 namespace: str,
-                gateway_name: str):
+                gateway_name: str,
+                port: int):
         id = "Gateway"
         super().__init__(scope, id)
 
         labels = {"app": gateway_name}
         gateway_servers = [
             nw.GatewaySpecServers(
-                port=nw.GatewaySpecServersPort(number=80, name="http", protocol="HTTP"),
+                port=nw.GatewaySpecServersPort(number=port, name="http", protocol="HTTP"),
                 hosts=["*"]
             )
         ]

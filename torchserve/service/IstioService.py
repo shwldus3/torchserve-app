@@ -25,9 +25,9 @@ class IstioService(Construct):
         RequestAuthenticationConstruct(self, namespace=self.namespace, app_name=self.app_name)
 
     def createAuthorizationPolicy(self):
-        AuthorizationPolicyConstruct(self, namespace=self.namespace, app_name=self.app_name)
+        AuthorizationPolicyConstruct(self, namespace=self.namespace, app_name=self.app_name, action="ALLOW", rules_values=["inference:pytorch"])
 
     def createGateway(self):
         gateway_name = "modelserve-gateway"
-        GatewayConstruct(self, namespace=self.namespace, gateway_name=gateway_name)
+        GatewayConstruct(self, namespace=self.namespace, gateway_name=gateway_name, port=80)
         VirtualServiceConstruct(self, namespace=self.namespace, gateway_name=gateway_name, app_name=self.app_name)

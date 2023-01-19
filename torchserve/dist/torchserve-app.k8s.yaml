@@ -105,14 +105,7 @@ kind: AuthorizationPolicy
 spec:
   action: ALLOW
   rules:
-    - to:
-        - operation:
-            methods:
-              - GET
-              - POST
-            paths:
-              - /pytorch/*
-      when:
+    - when:
         - key: request.auth.claims[permissions]
           values:
             - inference:pytorch

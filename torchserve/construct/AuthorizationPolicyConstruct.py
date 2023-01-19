@@ -8,7 +8,10 @@ class AuthorizationPolicyConstruct(Construct):
 
     def __init__(self, scope: Construct, *,
                 namespace: str,
-                app_name: str):
+                app_name: str,
+                action: str,
+                rules_key = "request.auth.claims[permissions]",
+                rules_values: list):
         id = "AuthorizationPolicy"
         super().__init__(scope, id)
 
@@ -16,12 +19,11 @@ class AuthorizationPolicyConstruct(Construct):
             self, id,
             metadata={"name": "pytorch-policy", "namespace": namespace},
             spec=sc.AuthorizationPolicySpec(
-              action=sc.AuthorizationPolicySpecAction("ALLOW"),
+              action=sc.AuthorizationPolicySpecAction(action),
               selector=sc.AuthorizationPolicySpecSelector(match_labels={"app": app_name}),
               rules=[
                 sc.AuthorizationPolicySpecRules(
-                  to=[sc.AuthorizationPolicySpecRulesTo(operation=sc.AuthorizationPolicySpecRulesToOperation(methods=["GET","POST"], paths=["/pytorch/*"]))],
-                  when=[sc.AuthorizationPolicySpecRulesWhen(key="request.auth.claims[permissions]", values=["inference:pytorch"])]
+                  when=[sc.AuthorizationPolicySpecRulesWhen(key=rules_key, values=rules_values)]
                 )
               ]
             )
