@@ -41,8 +41,8 @@
   ```bash
     docker build -f huggingface_transformers.Dockerfile \
       -t torchmodelarchiver \
-    	--build-arg now="$(date +%G%m%d_%H%M%S)" \
-    	--build-arg version=1.0 \
+      --build-arg now="$(date +%G%m%d_%H%M%S)" \
+      --build-arg version=1.0 \
     	.
   ```
 
