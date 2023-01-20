@@ -49,7 +49,7 @@
 #### 3. Test
   ```
     curl -X POST http://{ingressgateway IP}/pytorch/predictions/BERTSeqClassification \
-      -T samples/sample_text_captum_input.txt \
+      -T sample/sample_text_captum_input.txt \
       --header 'authorization: Bearer {token}'
   ``` 
 
