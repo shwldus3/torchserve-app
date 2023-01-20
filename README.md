@@ -11,16 +11,12 @@
 
 # How to use
 ## Deploy pytorch/serve 
-#### 1. Move to torchserve directory
-  ```bash
-    cd torchserve
-  ```
-
-#### 2. Generate k8s manifest with cdk8s
+#### 1. Generate k8s manifest with cdk8s
   - Install pip requirements
   - Import istio crd
   - Generate k8s manifests in "dist/"
   ```bash
+    cd torchserve
     pipenv install 
     cdk8s import crds/istio_crds.yaml
     cdk8s synth
@@ -28,6 +24,7 @@
 
 #### 3. Deploy
   ```bash
+    cd ..
     kubectl apply -f dist/
   ```
 
