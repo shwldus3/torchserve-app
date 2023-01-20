@@ -37,7 +37,12 @@ RUN gcloud config set project supertone
 RUN gcloud storage cp ${filename} gs://${bucket_name}/
 
 # torchserve 모델 등록
-ENV torchserve_url=${torchserve_url}/models?model_name=BERTSeqClassification&url=https://storage.googleapis.com/${bucket_name}/${filename}&batch_size=4&max_batch_delay=5000&initial_workers=1&synchronous=tru
-RUN echo $torchserve_url
+ENV register_url=${torchserve_url}/models?model_name=BERTSeqClassification&url=https://storage.googleapis.com/${bucket_name}/${filename}&batch_size=4&max_batch_delay=5000&initial_workers=1&synchronous=true
+RUN echo $register_url
 RUN echo $token
-RUN curl -X POST $torchserve_url --header "$token"
+RUN curl -X POST $register_url --header "$token"
+
+# torchserve default version 변경
+ENV update_version_url=${torchserve_url}/models/BERTSeqClassification/${version}/set-default
+RUN echo $update_version_url
+RUN curl -v -X PUT $register_url --header "$token"
