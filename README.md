@@ -22,20 +22,16 @@
     cdk8s synth
   ```
 
-#### 3. Deploy
+#### 2. Deploy
   ```bash
     cd ..
     kubectl apply -f dist/
   ```
 
 ## Serving model with pytorch/serve 
-#### 1. Move to model directory
+#### 1. Register sample model
   ```bash
     cd model
-  ```
-
-#### 2. Register sample model
-  ```bash
     docker build -f huggingface_transformers.Dockerfile \
       -t torchmodelarchiver \
       --build-arg now="$(date +%G%m%d_%H%M%S)" \
@@ -43,8 +39,9 @@
       .
   ```
 
-#### 3. Test
+#### 2. Test sample model
   ```
+    cd ..
     curl -X POST http://{ingressgateway IP}/pytorch/predictions/BERTSeqClassification \
       -T sample/sample_text_captum_input.txt \
       --header 'authorization: Bearer {token}'
