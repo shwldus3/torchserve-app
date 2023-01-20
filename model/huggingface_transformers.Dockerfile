@@ -45,4 +45,4 @@ RUN curl -X POST $register_url --header "$token"
 # torchserve default version 변경
 ENV update_version_url=${torchserve_url}/models/BERTSeqClassification/${version}/set-default
 RUN echo $update_version_url
-RUN curl -v -X PUT $register_url --header "$token"
+RUN curl -v -X PUT $update_version_url --header "$token"
