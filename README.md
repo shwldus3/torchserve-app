@@ -53,4 +53,4 @@
       --header 'authorization: Bearer {token}'
   ``` 
 
-# Test scenario & Result of Sample test [[link](https://www.notion.so/chloenoh/torchserve-app-cee738e75961435088fb0947d91aec80)]
+# Test scenario & Result of sample test [[link](https://www.notion.so/chloenoh/torchserve-app-cee738e75961435088fb0947d91aec80)]
