@@ -49,8 +49,8 @@
 #### 3. Test
   ```
     curl -X POST http://{ingressgateway IP}/pytorch/predictions/BERTSeqClassification \
-      -T samples/sample_text_captum_input.txt \
+      -T sample/sample_text_captum_input.txt \
       --header 'authorization: Bearer {token}'
   ``` 
 
-# Test scenario and Sample test result [[link](https://www.notion.so/chloenoh/torchserve-app-cee738e75961435088fb0947d91aec80)]
+# Test scenario & Result of sample test [[link](https://www.notion.so/chloenoh/torchserve-app-cee738e75961435088fb0947d91aec80)]
