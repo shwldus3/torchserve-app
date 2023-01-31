@@ -31,7 +31,6 @@ jobs:
         image: yunjjun/github-actions-app
         tags: v3, latest
         registry: docker.io
-        dockerfile: baseimage
-        directory: model
+        dockerfile: model/baseimage.Dockerfile
         username: ${{ secrets.DOCKER_USERNAME }}
         password: ${{ secrets.DOCKER_PASSWORD }}
