@@ -25,3 +25,13 @@ jobs:
         python-version: "3.8"
     - name: Display Python version
       run: python -c "import sys; print(sys.version)"
+    - name: Build & push Docker Base image
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: yunjjun/github-actions-app
+        tags: v3, latest
+        registry: docker.io
+        dockerfile: baseimage
+        directory: model
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
