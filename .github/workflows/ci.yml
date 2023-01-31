@@ -28,7 +28,7 @@ jobs:
     - name: Build & push Docker Base image
       uses: mr-smithers-excellent/docker-build-push@v5
       with:
-        image: yunjjun/github-actions-app
+        image: lindseynoh3/torcharchiver
         tags: v3, latest
         registry: docker.io
         dockerfile: model/baseimage.Dockerfile
