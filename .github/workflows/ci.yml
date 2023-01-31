@@ -1,0 +1,36 @@
+# This workflow will install Python dependencies, run tests and lint with a single version of Python
+# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+
+name: Python application
+
+on:
+  push:
+    branches: [ "master" ]
+  pull_request:
+    branches: [ "master" ]
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+  
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python
+      uses: actions/setup-python@v2
+      with:
+        python-version: "3.8"
+    - name: Display Python version
+      run: python -c "import sys; print(sys.version)"
+    - name: Build & push Docker Base image
+      uses: mr-smithers-excellent/docker-build-push@v5
+      with:
+        image: lindseynoh3/torcharchiver
+        tags: v3, latest
+        registry: docker.io
+        dockerfile: model/baseimage.Dockerfile
+        username: ${{ secrets.DOCKER_USERNAME }}
+        password: ${{ secrets.DOCKER_PASSWORD }}
